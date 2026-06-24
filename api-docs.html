@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gowa API Documentation</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell glass">
+    <section class="panel glass header-panel">
+      <h1>Gowa API Documentation</h1>
+      <p class="lede">All integration examples for the Cloudflare-hosted Gowa API.</p>
+    </section>
+
+    <section class="panel glass docs-panel">
+      <h2>Base URL</h2>
+      <pre>https://gowaapi.pages.dev/api</pre>
+
+      <h2>Authentication</h2>
+      <p>Include headers:</p>
+      <pre>X-Device-Id: official bharath
+X-Api-Key: YOUR_PUBLIC_API_KEY</pre>
+
+      <h2>Endpoints</h2>
+      <ul>
+        <li><strong>GET</strong> <code>/devices</code></li>
+        <li><strong>POST</strong> <code>/send/message</code></li>
+        <li><strong>POST</strong> <code>/send/image</code></li>
+        <li><strong>POST</strong> <code>/send/video</code></li>
+        <li><strong>POST</strong> <code>/send/file</code></li>
+      </ul>
+
+      <h2>JavaScript (Browser)</h2>
+      <pre>
+const BASE = "https://gowaapi.pages.dev/api";
+await fetch(`${BASE}/send/message`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "X-Device-Id": "official bharath",
+    "X-Api-Key": "YOUR_PUBLIC_API_KEY"
+  },
+  body: JSON.stringify({phone:"919876543210@s.whatsapp.net",message:"Hello",is_forwarded:false})
+});
+</pre>
+
+      <h2>Node.js</h2>
+      <pre>
+const fetch = require('node-fetch');
+const BASE = "https://gowaapi.pages.dev/api";
+await fetch(`${BASE}/send/image`, {
+  method: "POST",
+  headers: {"X-Device-Id":"official bharath","X-Api-Key":"YOUR_PUBLIC_API_KEY"},
+  body: new URLSearchParams({phone:"919876543210@s.whatsapp.net",caption:"Pic",image_url:"https://example.com/pic.jpg"})
+});
+</pre>
+
+      <h2>Python (requests)</h2>
+      <pre>
+import requests
+BASE = "https://gowaapi.pages.dev/api"
+headers = {"X-Device-Id":"official bharath","X-Api-Key":"YOUR_PUBLIC_API_KEY"}
+resp = requests.post(f"{BASE}/send/file", headers=headers, data={"phone":"919876543210@s.whatsapp.net","caption":"Doc"}, files={"file":open('doc.pdf','rb')})
+print(resp.json())
+</pre>
+
+      <h2>PHP (cURL)</h2>
+      <pre>
+$base = "https://gowaapi.pages.dev/api";
+$ch = curl_init("$base/send/video");
+curl_setopt_array($ch, [
+  CURLOPT_POST => true,
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_HTTPHEADER => ["X-Device-Id: official bharath","X-Api-Key: YOUR_PUBLIC_API_KEY"],
+  CURLOPT_POSTFIELDS => [
+    "phone"=>"919876543210@s.whatsapp.net",
+    "video_url"=>"https://example.com/video.mp4"
+  ]
+]);
+$out = curl_exec($ch);
+curl_close($ch);
+echo $out;
+</pre>
+
+      <h2>React Example (fetch)</h2>
+      <pre>
+const send = async()=>{
+  const res = await fetch('https://gowaapi.pages.dev/api/send/message',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','X-Device-Id':'official bharath','X-Api-Key':'YOUR_PUBLIC_API_KEY'},
+    body:JSON.stringify({phone:'919876543210@s.whatsapp.net',message:'Hi',is_forwarded:false})
+  });
+  console.log(await res.json());
+};
+</pre>
+
+      <h2>Next.js API Route Proxy</h2>
+      <pre>
+// pages/api/gowa-proxy.js
+export default async function handler(req,res){
+  const proxyRes = await fetch(`https://gowaapi.pages.dev/api${req.url}`,{method:req.method,headers:req.headers,body:req.body});
+  const data = await proxyRes.json();
+  res.status(proxyRes.status).json(data);
+}
+</pre>
+    </section>
+  </main>
+<a href=\ /index.html\ class=\back-link\>&larr; Back to Tester</a>\n</body>
+</html>
