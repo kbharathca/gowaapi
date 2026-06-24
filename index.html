@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gowa API Tester</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="panel header-panel">
+      <div>
+        <p class="eyebrow">WhatsApp API test console</p>
+        <h1>Gowa API Tester</h1>
+        <p class="lede">Send text, images, videos, and files through your connected Gowa device.</p>
+      </div>
+      <div class="status-card" id="deviceSummary">
+        <span class="status-dot" id="statusDot"></span>
+        <div>
+          <strong id="statusTitle">Ready</strong>
+          <small id="statusDetail">Device context is loaded</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <aside class="panel settings-panel">
+        <h2>Connection</h2>
+        <label>
+          Direct API base URL
+          <input id="apiBaseUrl" type="url" autocomplete="url" placeholder="Only needed when proxy mode is off">
+        </label>
+        <label class="check proxy-check">
+          <input id="useProxy" type="checkbox">
+          <span>Use Cloudflare Pages API proxy</span>
+        </label>
+        <label>
+          Public API key
+          <input id="publicApiKey" type="password" autocomplete="off" placeholder="Only if PUBLIC_API_KEY is set in Cloudflare">
+        </label>
+        <div class="two-col">
+          <label>
+            Direct Basic auth user
+            <input id="authUser" type="text" autocomplete="username">
+          </label>
+          <label>
+            Direct Basic auth password
+            <input id="authPassword" type="password" autocomplete="current-password">
+          </label>
+        </div>
+        <label>
+          Device ID
+          <input id="deviceId" type="text">
+        </label>
+        <label>
+          Connected JID
+          <input id="jid" type="text">
+        </label>
+        <div class="button-row">
+          <button id="saveSettings" type="button">Save</button>
+          <button id="checkDevices" class="secondary" type="button">Check Devices</button>
+        </div>
+        <p class="note">For Cloudflare Pages, keep proxy mode enabled. Coolify/Gowa credentials live only in Cloudflare environment variables.</p>
+      </aside>
+
+      <section class="panel tester-panel">
+        <div class="tabs" role="tablist" aria-label="Send type">
+          <button class="tab active" type="button" data-tab="text">Text</button>
+          <button class="tab" type="button" data-tab="image">Photo</button>
+          <button class="tab" type="button" data-tab="video">Video</button>
+          <button class="tab" type="button" data-tab="file">File</button>
+        </div>
+
+        <form id="sendForm">
+          <div class="two-col">
+            <label>
+              Recipient phone number
+              <input id="phone" type="tel" placeholder="919876543210">
+            </label>
+            <label>
+              Recipient type
+              <select id="recipientType">
+                <option value="@s.whatsapp.net">Person</option>
+                <option value="@g.us">Group</option>
+                <option value="@newsletter">Newsletter</option>
+                <option value="status@broadcast">Status</option>
+              </select>
+            </label>
+          </div>
+
+          <label id="messageBlock">
+            Message
+            <textarea id="message" rows="5" placeholder="Type your WhatsApp text message"></textarea>
+          </label>
+
+          <label id="captionBlock" class="hidden">
+            Caption
+            <textarea id="caption" rows="4" placeholder="Caption sent with the media"></textarea>
+          </label>
+
+          <div id="mediaBlock" class="hidden">
+            <label id="mediaFileLabel">
+              Select media
+              <input id="mediaFile" type="file">
+            </label>
+            <label id="mediaUrlLabel">
+              Media URL
+              <input id="mediaUrl" type="url" placeholder="https://example.com/file.jpg">
+            </label>
+            <p class="note">For photo and video you can upload a local file or use a direct URL. Files require upload.</p>
+          </div>
+
+          <div class="options">
+            <label class="check">
+              <input id="isForwarded" type="checkbox">
+              <span>Mark as forwarded</span>
+            </label>
+            <label class="check" id="compressWrap">
+              <input id="compress" type="checkbox">
+              <span>Compress media</span>
+            </label>
+            <label class="check" id="viewOnceWrap">
+              <input id="viewOnce" type="checkbox">
+              <span>View once</span>
+            </label>
+            <label class="check hidden" id="gifPlaybackWrap">
+              <input id="gifPlayback" type="checkbox">
+              <span>GIF playback</span>
+            </label>
+          </div>
+
+          <details>
+            <summary>Advanced fields</summary>
+            <div class="two-col advanced">
+              <label>
+                Reply message ID
+                <input id="replyMessageId" type="text">
+              </label>
+              <label>
+                Disappearing duration, seconds
+                <input id="duration" type="number" min="0" value="0">
+              </label>
+            </div>
+          </details>
+
+          <div class="send-row">
+            <button id="sendButton" type="submit">Send Text Message</button>
+            <button id="resetForm" class="secondary" type="button">Reset</button>
+          </div>
+        </form>
+      </section>
+    </section>
+
+    <section class="panel response-panel">
+      <div class="response-head">
+        <h2>Response</h2>
+        <button id="clearResponse" class="secondary small" type="button">Clear</button>
+      </div>
+      <pre id="responseBox">No request sent yet.</pre>
+    </section>
+
+    <section class="panel docs-panel">
+      <h2>Endpoint Quick Reference</h2>
+      <div class="docs-grid">
+        <article>
+          <h3>Text</h3>
+          <code>POST /send/message</code>
+          <p>JSON: phone, message, is_forwarded, reply_message_id, duration.</p>
+        </article>
+        <article>
+          <h3>Photo</h3>
+          <code>POST /send/image</code>
+          <p>Form data: phone, image or image_url, caption, compress, view_once.</p>
+        </article>
+        <article>
+          <h3>Video</h3>
+          <code>POST /send/video</code>
+          <p>Form data: phone, video or video_url, caption, compress, view_once, gif_playback.</p>
+        </article>
+        <article>
+          <h3>File</h3>
+          <code>POST /send/file</code>
+          <p>Form data: phone, file, caption, is_forwarded, reply_message_id.</p>
+        </article>
+      </div>
+      <p class="note">Every send request includes <code>X-Device-Id</code>. See <a href="API_DOCS.md">API_DOCS.md</a> for Cloudflare API examples.</p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
