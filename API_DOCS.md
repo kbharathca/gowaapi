@@ -29,7 +29,7 @@ Do not call the Coolify/Gowa URL directly from client apps. Use the Cloudflare A
 Every request should include the active device:
 
 ```text
-X-Device-Id: official bharath
+X-Device-Id: YOUR_DEVICE_ID
 ```
 
 If `PUBLIC_API_KEY` is configured in Cloudflare Pages, every request must also include:
@@ -78,7 +78,7 @@ curl "$BASE_URL/devices" \
 ```bash
 curl -X POST "$BASE_URL/send/message" \
   -H "Content-Type: application/json" \
-  -H "X-Device-Id: official bharath" \
+  -H "X-Device-Id: YOUR_DEVICE_ID" \
   -H "X-Api-Key: YOUR_PUBLIC_API_KEY" \
   -d '{
     "phone": "919876543210@s.whatsapp.net",
@@ -91,7 +91,7 @@ curl -X POST "$BASE_URL/send/message" \
 
 ```bash
 curl -X POST "$BASE_URL/send/image" \
-  -H "X-Device-Id: official bharath" \
+  -H "X-Device-Id: YOUR_DEVICE_ID" \
   -H "X-Api-Key: YOUR_PUBLIC_API_KEY" \
   -F "phone=919876543210@s.whatsapp.net" \
   -F "caption=Photo caption text" \
@@ -105,7 +105,7 @@ curl -X POST "$BASE_URL/send/image" \
 
 ```bash
 curl -X POST "$BASE_URL/send/image" \
-  -H "X-Device-Id: official bharath" \
+  -H "X-Device-Id: YOUR_DEVICE_ID" \
   -H "X-Api-Key: YOUR_PUBLIC_API_KEY" \
   -F "phone=919876543210@s.whatsapp.net" \
   -F "caption=Photo from URL" \
@@ -116,7 +116,7 @@ curl -X POST "$BASE_URL/send/image" \
 
 ```bash
 curl -X POST "$BASE_URL/send/video" \
-  -H "X-Device-Id: official bharath" \
+  -H "X-Device-Id: YOUR_DEVICE_ID" \
   -H "X-Api-Key: YOUR_PUBLIC_API_KEY" \
   -F "phone=919876543210@s.whatsapp.net" \
   -F "caption=Video caption text" \
@@ -131,7 +131,7 @@ curl -X POST "$BASE_URL/send/video" \
 
 ```bash
 curl -X POST "$BASE_URL/send/video" \
-  -H "X-Device-Id: official bharath" \
+  -H "X-Device-Id: YOUR_DEVICE_ID" \
   -H "X-Api-Key: YOUR_PUBLIC_API_KEY" \
   -F "phone=919876543210@s.whatsapp.net" \
   -F "caption=Video from URL" \
@@ -142,7 +142,7 @@ curl -X POST "$BASE_URL/send/video" \
 
 ```bash
 curl -X POST "$BASE_URL/send/file" \
-  -H "X-Device-Id: official bharath" \
+  -H "X-Device-Id: YOUR_DEVICE_ID" \
   -H "X-Api-Key: YOUR_PUBLIC_API_KEY" \
   -F "phone=919876543210@s.whatsapp.net" \
   -F "caption=Document caption text" \
@@ -161,7 +161,7 @@ const response = await fetch(`${BASE_URL}/send/message`, {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    "X-Device-Id": "official bharath",
+    "X-Device-Id": "YOUR_DEVICE_ID",
     "X-Api-Key": "YOUR_PUBLIC_API_KEY"
   },
   body: JSON.stringify({
@@ -188,7 +188,7 @@ form.append("view_once", "false");
 const response = await fetch(`${BASE_URL}/send/image`, {
   method: "POST",
   headers: {
-    "X-Device-Id": "official bharath",
+    "X-Device-Id": "YOUR_DEVICE_ID",
     "X-Api-Key": "YOUR_PUBLIC_API_KEY"
   },
   body: form
@@ -209,7 +209,7 @@ async function sendText() {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-Device-Id": "official bharath",
+      "X-Device-Id": "YOUR_DEVICE_ID",
       "X-Api-Key": "YOUR_PUBLIC_API_KEY"
     },
     body: JSON.stringify({
@@ -241,7 +241,7 @@ form.append("file", new Blob([fileBuffer]), "document.pdf");
 const response = await fetch(`${BASE_URL}/send/file`, {
   method: "POST",
   headers: {
-    "X-Device-Id": "official bharath",
+    "X-Device-Id": "YOUR_DEVICE_ID",
     "X-Api-Key": "YOUR_PUBLIC_API_KEY"
   },
   body: form
@@ -265,7 +265,7 @@ import requests
 
 BASE_URL = "https://gowaapi.pages.dev/api"
 HEADERS = {
-    "X-Device-Id": "official bharath",
+    "X-Device-Id": "YOUR_DEVICE_ID",
     "X-Api-Key": "YOUR_PUBLIC_API_KEY",
 }
 
@@ -287,7 +287,7 @@ import requests
 
 BASE_URL = "https://gowaapi.pages.dev/api"
 HEADERS = {
-    "X-Device-Id": "official bharath",
+    "X-Device-Id": "YOUR_DEVICE_ID",
     "X-Api-Key": "YOUR_PUBLIC_API_KEY",
 }
 
@@ -326,7 +326,7 @@ curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HTTPHEADER => [
         "Content-Type: application/json",
-        "X-Device-Id: official bharath",
+        "X-Device-Id: YOUR_DEVICE_ID",
         "X-Api-Key: YOUR_PUBLIC_API_KEY",
     ],
     CURLOPT_POSTFIELDS => json_encode($payload),
@@ -358,7 +358,7 @@ curl_setopt_array($ch, [
     CURLOPT_POST => true,
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HTTPHEADER => [
-        "X-Device-Id: official bharath",
+        "X-Device-Id: YOUR_DEVICE_ID",
         "X-Api-Key: YOUR_PUBLIC_API_KEY",
     ],
     CURLOPT_POSTFIELDS => $postFields,
@@ -378,7 +378,7 @@ echo $response . PHP_EOL;
 2. Set method to `POST`.
 3. Add headers:
    - `Content-Type: application/json`
-   - `X-Device-Id: official bharath`
+   - `X-Device-Id: YOUR_DEVICE_ID`
    - `X-Api-Key: YOUR_PUBLIC_API_KEY`
 4. Select Body -> raw -> JSON.
 5. Use:
@@ -457,3 +457,4 @@ Cloudflare request upload limits depend on your Cloudflare plan. For very large 
 video_url=https://example.com/video.mp4
 image_url=https://example.com/photo.jpg
 ```
+

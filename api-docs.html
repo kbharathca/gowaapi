@@ -52,7 +52,7 @@
           <h3>Authentication</h3>
           <p>Every request must include the device ID header:</p>
           <div class="code-block">
-            <code>X-Device-Id: official bharath</code>
+            <code>X-Device-Id: YOUR_DEVICE_ID</code>
           </div>
           <p>If <code>PUBLIC_API_KEY</code> is configured, also include:</p>
           <div class="code-block">
@@ -79,7 +79,7 @@
           <table class="param-table">
             <tr><th>Header</th><th>Required</th><th>Value</th></tr>
             <tr><td><code>Content-Type</code></td><td>Yes</td><td><code>application/json</code></td></tr>
-            <tr><td><code>X-Device-Id</code></td><td>Yes</td><td><code>official bharath</code></td></tr>
+            <tr><td><code>X-Device-Id</code></td><td>Yes</td><td><code>YOUR_DEVICE_ID</code></td></tr>
             <tr><td><code>X-Api-Key</code></td><td>If set</td><td><code>YOUR_PUBLIC_API_KEY</code></td></tr>
           </table>
 
@@ -96,7 +96,7 @@
           <h3>cURL</h3>
           <div class="code-block"><pre>curl -X POST "https://gowaapi.pages.dev/api/send/message" \
   -H "Content-Type: application/json" \
-  -H "X-Device-Id: official bharath" \
+  -H "X-Device-Id: YOUR_DEVICE_ID" \
   -H "X-Api-Key: YOUR_PUBLIC_API_KEY" \
   -d '{
     "phone": "919876543210@s.whatsapp.net",
@@ -109,7 +109,7 @@
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    "X-Device-Id": "official bharath",
+    "X-Device-Id": "YOUR_DEVICE_ID",
     "X-Api-Key": "YOUR_PUBLIC_API_KEY"
   },
   body: JSON.stringify({
@@ -127,7 +127,7 @@ console.log(data);</pre></div>
 res = requests.post(
     "https://gowaapi.pages.dev/api/send/message",
     headers={
-        "X-Device-Id": "official bharath",
+        "X-Device-Id": "YOUR_DEVICE_ID",
         "X-Api-Key": "YOUR_PUBLIC_API_KEY"
     },
     json={
@@ -151,7 +151,7 @@ curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HTTPHEADER => [
         "Content-Type: application/json",
-        "X-Device-Id: official bharath",
+        "X-Device-Id: YOUR_DEVICE_ID",
         "X-Api-Key: YOUR_PUBLIC_API_KEY"
     ],
     CURLOPT_POSTFIELDS => json_encode($payload)
@@ -172,7 +172,7 @@ const res = await axios.post(
     },
     {
         headers: {
-            "X-Device-Id": "official bharath",
+            "X-Device-Id": "YOUR_DEVICE_ID",
             "X-Api-Key": "YOUR_PUBLIC_API_KEY"
         }
     }
@@ -191,7 +191,7 @@ function SendMessage() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Device-Id": "official bharath",
+        "X-Device-Id": "YOUR_DEVICE_ID",
         "X-Api-Key": "YOUR_PUBLIC_API_KEY"
       },
       body: JSON.stringify({ phone, message, is_forwarded: false })
@@ -217,7 +217,7 @@ export async function POST(req: Request) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-Device-Id": process.env.GOWA_DEVICE_ID || "official bharath",
+      "X-Device-Id": process.env.GOWA_DEVICE_ID || "YOUR_DEVICE_ID",
       "X-Api-Key": process.env.PUBLIC_API_KEY || ""
     },
     body: JSON.stringify(body)
@@ -238,7 +238,7 @@ export async function POST(req: Request) {
           <h3>Request Headers</h3>
           <table class="param-table">
             <tr><th>Header</th><th>Required</th><th>Value</th></tr>
-            <tr><td><code>X-Device-Id</code></td><td>Yes</td><td><code>official bharath</code></td></tr>
+            <tr><td><code>X-Device-Id</code></td><td>Yes</td><td><code>YOUR_DEVICE_ID</code></td></tr>
             <tr><td><code>X-Api-Key</code></td><td>If set</td><td><code>YOUR_PUBLIC_API_KEY</code></td></tr>
           </table>
 
@@ -256,7 +256,7 @@ export async function POST(req: Request) {
 
           <h3>cURL (Upload)</h3>
           <div class="code-block"><pre>curl -X POST "https://gowaapi.pages.dev/api/send/image" \
-  -H "X-Device-Id: official bharath" \
+  -H "X-Device-Id: YOUR_DEVICE_ID" \
   -H "X-Api-Key: YOUR_PUBLIC_API_KEY" \
   -F "phone=919876543210@s.whatsapp.net" \
   -F "caption=Photo caption" \
@@ -267,7 +267,7 @@ export async function POST(req: Request) {
 
           <h3>cURL (URL)</h3>
           <div class="code-block"><pre>curl -X POST "https://gowaapi.pages.dev/api/send/image" \
-  -H "X-Device-Id: official bharath" \
+  -H "X-Device-Id: YOUR_DEVICE_ID" \
   -H "X-Api-Key: YOUR_PUBLIC_API_KEY" \
   -F "phone=919876543210@s.whatsapp.net" \
   -F "caption=Photo from URL" \
@@ -284,7 +284,7 @@ form.append("view_once", "false");
 const res = await fetch("https://gowaapi.pages.dev/api/send/image", {
   method: "POST",
   headers: {
-    "X-Device-Id": "official bharath",
+    "X-Device-Id": "YOUR_DEVICE_ID",
     "X-Api-Key": "YOUR_PUBLIC_API_KEY"
   },
   body: form
@@ -308,7 +308,7 @@ with open("photo.jpg", "rb") as f:
         data=data,
         files=files,
         headers={
-            "X-Device-Id": "official bharath",
+            "X-Device-Id": "YOUR_DEVICE_ID",
             "X-Api-Key": "YOUR_PUBLIC_API_KEY"
         }
     )
@@ -327,7 +327,7 @@ with open("photo.jpg", "rb") as f:
 
     await fetch("https://gowaapi.pages.dev/api/send/image", {
       method: "POST",
-      headers: { "X-Device-Id": "official bharath" },
+      headers: { "X-Device-Id": "YOUR_DEVICE_ID" },
       body: form
     });
   };
@@ -365,7 +365,7 @@ with open("photo.jpg", "rb") as f:
 
           <h3>cURL (Upload)</h3>
           <div class="code-block"><pre>curl -X POST "https://gowaapi.pages.dev/api/send/video" \
-  -H "X-Device-Id: official bharath" \
+  -H "X-Device-Id: YOUR_DEVICE_ID" \
   -H "X-Api-Key: YOUR_PUBLIC_API_KEY" \
   -F "phone=919876543210@s.whatsapp.net" \
   -F "caption=Video caption" \
@@ -377,7 +377,7 @@ with open("photo.jpg", "rb") as f:
 
           <h3>cURL (URL)</h3>
           <div class="code-block"><pre>curl -X POST "https://gowaapi.pages.dev/api/send/video" \
-  -H "X-Device-Id: official bharath" \
+  -H "X-Device-Id: YOUR_DEVICE_ID" \
   -H "X-Api-Key: YOUR_PUBLIC_API_KEY" \
   -F "phone=919876543210@s.whatsapp.net" \
   -F "caption=Video from URL" \
@@ -400,7 +400,7 @@ with open("video.mp4", "rb") as f:
         data=data,
         files=files,
         headers={
-            "X-Device-Id": "official bharath",
+            "X-Device-Id": "YOUR_DEVICE_ID",
             "X-Api-Key": "YOUR_PUBLIC_API_KEY"
         }
     )
@@ -416,7 +416,7 @@ form.append("view_once", "false");
 
 const res = await fetch("https://gowaapi.pages.dev/api/send/video", {
   method: "POST",
-  headers: { "X-Device-Id": "official bharath" },
+  headers: { "X-Device-Id": "YOUR_DEVICE_ID" },
   body: form
 });
 console.log(await res.json());</pre></div>
@@ -442,7 +442,7 @@ console.log(await res.json());</pre></div>
 
           <h3>cURL</h3>
           <div class="code-block"><pre>curl -X POST "https://gowaapi.pages.dev/api/send/file" \
-  -H "X-Device-Id: official bharath" \
+  -H "X-Device-Id: YOUR_DEVICE_ID" \
   -H "X-Api-Key: YOUR_PUBLIC_API_KEY" \
   -F "phone=919876543210@s.whatsapp.net" \
   -F "caption=Document caption" \
@@ -464,7 +464,7 @@ with open("document.pdf", "rb") as f:
         data=data,
         files=files,
         headers={
-            "X-Device-Id": "official bharath",
+            "X-Device-Id": "YOUR_DEVICE_ID",
             "X-Api-Key": "YOUR_PUBLIC_API_KEY"
         }
     )
@@ -479,7 +479,7 @@ form.append("is_forwarded", "false");
 
 const res = await fetch("https://gowaapi.pages.dev/api/send/file", {
   method: "POST",
-  headers: { "X-Device-Id": "official bharath" },
+  headers: { "X-Device-Id": "YOUR_DEVICE_ID" },
   body: form
 });
 console.log(await res.json());</pre></div>
@@ -591,3 +591,4 @@ console.log(devices);</pre></div>
   </script>
 </body>
 </html>
+

@@ -20,9 +20,9 @@ Cloudflare Pages will serve `index.html` and automatically deploy the Function i
 Add these in Cloudflare Pages:
 
 ```env
-GOWA_BASE_URL=https://whatsapp.apps.tirupatihost.in
-GOWA_BASIC_AUTH=your-coolify-gowa-user:your-coolify-gowa-password
-GOWA_DEVICE_ID=official bharath
+GOWA_BASE_URL=https://https://your-gowa-instance.example.com
+GOWA_BASIC_AUTH=your-gowa-username:your-gowa-password
+GOWA_DEVICE_ID=YOUR_DEVICE_ID
 ```
 
 Optional but recommended if you give the API to other people:

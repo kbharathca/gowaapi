@@ -5,7 +5,7 @@
     apiBaseUrl: "",
     authUser: "",
     authPassword: "",
-    deviceId: "official bharath",
+    deviceId: "YOUR_DEVICE_ID",
     jid: "917207446677@s.whatsapp.net",
     publicApiKey: "",
     useProxy: true
@@ -398,3 +398,4 @@
     return value.replace(/\/+$/, "");
   }
 })();
+

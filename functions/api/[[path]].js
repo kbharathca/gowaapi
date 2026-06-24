@@ -19,14 +19,14 @@ export async function onRequest(context) {
 
   const gowaBaseUrl = trimSlash(env.GOWA_BASE_URL || "https://whatsapp.apps.tirupatihost.in");
   const basicAuth = firstBasicAuth(env.GOWA_BASIC_AUTH || env.APP_BASIC_AUTH || "");
-  const deviceId = request.headers.get("X-Device-Id") || env.GOWA_DEVICE_ID || "official bharath";
+  const deviceId = request.headers.get("X-Device-Id") || env.GOWA_DEVICE_ID || "YOUR_DEVICE_ID";
   const path = normalizePath(params.path);
 
   // --- Special _env endpoint returns configured env vars (no auth needed) ---
   if (path === "_env") {
     return jsonResponse({
       ok: true,
-      GOWA_DEVICE_ID: env.GOWA_DEVICE_ID || "official bharath",
+      GOWA_DEVICE_ID: env.GOWA_DEVICE_ID || "YOUR_DEVICE_ID",
       GOWA_BASE_URL: env.GOWA_BASE_URL || "",
       PUBLIC_API_KEY_SET: !!env.PUBLIC_API_KEY
     }, 200);
