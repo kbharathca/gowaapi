@@ -7,7 +7,7 @@ This API is served from Cloudflare Pages and forwards requests securely to the c
 Replace this with your real Cloudflare Pages or custom domain:
 
 ```text
-https://YOUR-CLOUDFLARE-DOMAIN.pages.dev/api
+https://gowaapi.pages.dev/api
 ```
 
 If you connect a custom domain, use:
@@ -19,7 +19,7 @@ https://api.yourdomain.com/api
 All examples below use:
 
 ```text
-BASE_URL=https://YOUR-CLOUDFLARE-DOMAIN.pages.dev/api
+BASE_URL=https://gowaapi.pages.dev/api
 ```
 
 Do not call the Coolify/Gowa URL directly from client apps. Use the Cloudflare API only.
@@ -155,7 +155,7 @@ curl -X POST "$BASE_URL/send/file" \
 ### Send Text
 
 ```js
-const BASE_URL = "https://YOUR-CLOUDFLARE-DOMAIN.pages.dev/api";
+const BASE_URL = "https://gowaapi.pages.dev/api";
 
 const response = await fetch(`${BASE_URL}/send/message`, {
   method: "POST",
@@ -202,7 +202,7 @@ Node.js 18+ includes `fetch` and `FormData`.
 ### Send Text
 
 ```js
-const BASE_URL = "https://YOUR-CLOUDFLARE-DOMAIN.pages.dev/api";
+const BASE_URL = "https://gowaapi.pages.dev/api";
 
 async function sendText() {
   const response = await fetch(`${BASE_URL}/send/message`, {
@@ -230,7 +230,7 @@ sendText();
 ```js
 import { readFile } from "node:fs/promises";
 
-const BASE_URL = "https://YOUR-CLOUDFLARE-DOMAIN.pages.dev/api";
+const BASE_URL = "https://gowaapi.pages.dev/api";
 
 const fileBuffer = await readFile("./document.pdf");
 const form = new FormData();
@@ -263,7 +263,7 @@ pip install requests
 ```python
 import requests
 
-BASE_URL = "https://YOUR-CLOUDFLARE-DOMAIN.pages.dev/api"
+BASE_URL = "https://gowaapi.pages.dev/api"
 HEADERS = {
     "X-Device-Id": "official bharath",
     "X-Api-Key": "YOUR_PUBLIC_API_KEY",
@@ -285,7 +285,7 @@ print(response.json())
 ```python
 import requests
 
-BASE_URL = "https://YOUR-CLOUDFLARE-DOMAIN.pages.dev/api"
+BASE_URL = "https://gowaapi.pages.dev/api"
 HEADERS = {
     "X-Device-Id": "official bharath",
     "X-Api-Key": "YOUR_PUBLIC_API_KEY",
@@ -312,7 +312,7 @@ print(response.json())
 
 ```php
 <?php
-$baseUrl = "https://YOUR-CLOUDFLARE-DOMAIN.pages.dev/api";
+$baseUrl = "https://gowaapi.pages.dev/api";
 
 $payload = [
     "phone" => "919876543210@s.whatsapp.net",
@@ -344,7 +344,7 @@ echo $response . PHP_EOL;
 
 ```php
 <?php
-$baseUrl = "https://YOUR-CLOUDFLARE-DOMAIN.pages.dev/api";
+$baseUrl = "https://gowaapi.pages.dev/api";
 
 $postFields = [
     "phone" => "919876543210@s.whatsapp.net",
@@ -374,7 +374,7 @@ echo $response . PHP_EOL;
 
 ## Postman Usage
 
-1. Set request URL to `https://YOUR-CLOUDFLARE-DOMAIN.pages.dev/api/send/message`.
+1. Set request URL to `https://gowaapi.pages.dev/api/send/message`.
 2. Set method to `POST`.
 3. Add headers:
    - `Content-Type: application/json`

@@ -7,8 +7,8 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="shell">
-    <section class="panel header-panel">
+  <main class="shell glass">
+    <section class="panel glass header-panel">
       <div>
         <p class="eyebrow">WhatsApp API test console</p>
         <h1>Gowa API Tester</h1>
@@ -24,14 +24,14 @@
     </section>
 
     <section class="grid">
-      <aside class="panel settings-panel">
+      <aside class="panel glass settings-panel">
         <h2>Connection</h2>
         <label>
           Direct API base URL
           <input id="apiBaseUrl" type="url" autocomplete="url" placeholder="Only needed when proxy mode is off">
         </label>
         <label class="check proxy-check">
-          <input id="useProxy" type="checkbox">
+          <input id="useProxy" type="checkbox" checked>
           <span>Use Cloudflare Pages API proxy</span>
         </label>
         <label>
@@ -50,7 +50,7 @@
         </div>
         <label>
           Device ID
-          <input id="deviceId" type="text">
+          <input id="deviceId" type="text" value="official bharath">
         </label>
         <label>
           Connected JID
@@ -63,7 +63,7 @@
         <p class="note">For Cloudflare Pages, keep proxy mode enabled. Coolify/Gowa credentials live only in Cloudflare environment variables.</p>
       </aside>
 
-      <section class="panel tester-panel">
+      <section class="panel glass tester-panel">
         <div class="tabs" role="tablist" aria-label="Send type">
           <button class="tab active" type="button" data-tab="text">Text</button>
           <button class="tab" type="button" data-tab="image">Photo</button>
@@ -151,7 +151,7 @@
       </section>
     </section>
 
-    <section class="panel response-panel">
+    <section class="panel glass response-panel">
       <div class="response-head">
         <h2>Response</h2>
         <button id="clearResponse" class="secondary small" type="button">Clear</button>
@@ -159,7 +159,7 @@
       <pre id="responseBox">No request sent yet.</pre>
     </section>
 
-    <section class="panel docs-panel">
+    <section class="panel glass docs-panel">
       <h2>Endpoint Quick Reference</h2>
       <div class="docs-grid">
         <article>
