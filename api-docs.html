@@ -9,102 +9,585 @@
 <body>
   <main class="shell glass">
     <section class="panel glass header-panel">
-      <h1>Gowa API Documentation</h1>
-      <p class="lede">All integration examples for the Cloudflare-hosted Gowa API.</p>
+      <div>
+        <p class="eyebrow">WhatsApp Cloudflare API</p>
+        <h1>Gowa API Documentation</h1>
+        <p class="lede">Complete reference for sending WhatsApp messages via Cloudflare Pages proxy.</p>
+      </div>
+      <a href="/index.html" class="glass-btn">&larr; API Tester</a>
     </section>
 
-    <section class="panel glass docs-panel">
-      <h2>Base URL</h2>
-      <pre>https://gowaapi.pages.dev/api</pre>
+    <div class="doc-layout">
+      <nav class="panel glass sidebar">
+        <h3>Contents</h3>
+        <ul class="sidebar-nav">
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#text">Text Messages</a></li>
+          <li><a href="#image">Photo/Image</a></li>
+          <li><a href="#video">Video</a></li>
+          <li><a href="#file">File/Document</a></li>
+          <li><a href="#devices">Devices</a></li>
+          <li><a href="#integration">Integrations</a></li>
+          <li><a href="#optional">Optional Fields</a></li>
+          <li><a href="#response">Response Format</a></li>
+          <li><a href="#cors">CORS & Limits</a></li>
+        </ul>
+        <div class="env-card" id="envCard">
+          <h4>Connected Device</h4>
+          <div id="deviceInfo">Loading...</div>
+        </div>
+      </nav>
 
-      <h2>Authentication</h2>
-      <p>Include headers:</p>
-      <pre>X-Device-Id: official bharath
-X-Api-Key: YOUR_PUBLIC_API_KEY</pre>
+      <div class="doc-content">
+        <section id="overview" class="panel glass doc-section">
+          <h2>Overview</h2>
+          <p>The Gowa API runs on Cloudflare Pages and proxies requests to your Coolify/Gowa WhatsApp service. All requests are authenticated server-side using environment variables.</p>
+          
+          <h3>Base URL</h3>
+          <div class="code-block">
+            <code>https://gowaapi.pages.dev/api</code>
+          </div>
+          <p class="note">Do not call the Coolify/Gowa URL directly from client apps. Use the Cloudflare API only.</p>
 
-      <h2>Endpoints</h2>
-      <ul>
-        <li><strong>GET</strong> <code>/devices</code></li>
-        <li><strong>POST</strong> <code>/send/message</code></li>
-        <li><strong>POST</strong> <code>/send/image</code></li>
-        <li><strong>POST</strong> <code>/send/video</code></li>
-        <li><strong>POST</strong> <code>/send/file</code></li>
-      </ul>
+          <h3>Authentication</h3>
+          <p>Every request must include the device ID header:</p>
+          <div class="code-block">
+            <code>X-Device-Id: official bharath</code>
+          </div>
+          <p>If <code>PUBLIC_API_KEY</code> is configured, also include:</p>
+          <div class="code-block">
+            <code>X-Api-Key: YOUR_PUBLIC_API_KEY</code>
+          </div>
 
-      <h2>JavaScript (Browser)</h2>
-      <pre>
-const BASE = "https://gowaapi.pages.dev/api";
-await fetch(`${BASE}/send/message`, {
+          <h3>Phone Number Format</h3>
+          <p>Use full WhatsApp JID format:</p>
+          <div class="code-block">
+            <code>919876543210@s.whatsapp.net</code>
+          </div>
+          <p class="note">Remove +, spaces, dashes, then add @s.whatsapp.net</p>
+        </section>
+
+        <section id="text" class="panel glass doc-section">
+          <h2><span class="endpoint-badge post">POST</span> Send Text Message</h2>
+          <p class="section-desc">Send a plain text WhatsApp message to any contact or group.</p>
+          
+          <div class="endpoint-url">
+            <code>https://gowaapi.pages.dev/api/send/message</code>
+          </div>
+
+          <h3>Request Headers</h3>
+          <table class="param-table">
+            <tr><th>Header</th><th>Required</th><th>Value</th></tr>
+            <tr><td><code>Content-Type</code></td><td>Yes</td><td><code>application/json</code></td></tr>
+            <tr><td><code>X-Device-Id</code></td><td>Yes</td><td><code>official bharath</code></td></tr>
+            <tr><td><code>X-Api-Key</code></td><td>If set</td><td><code>YOUR_PUBLIC_API_KEY</code></td></tr>
+          </table>
+
+          <h3>Request Body (JSON)</h3>
+          <table class="param-table">
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+            <tr><td><code>phone</code></td><td>string</td><td>Yes</td><td>Recipient JID</td></tr>
+            <tr><td><code>message</code></td><td>string</td><td>Yes</td><td>Text content</td></tr>
+            <tr><td><code>is_forwarded</code></td><td>boolean</td><td>No</td><td>Mark as forwarded</td></tr>
+            <tr><td><code>reply_message_id</code></td><td>string</td><td>No</td><td>Reply to message</td></tr>
+            <tr><td><code>duration</code></td><td>number</td><td>No</td><td>Disappearing seconds</td></tr>
+          </table>
+
+          <h3>cURL</h3>
+          <div class="code-block"><pre>curl -X POST "https://gowaapi.pages.dev/api/send/message" \
+  -H "Content-Type: application/json" \
+  -H "X-Device-Id: official bharath" \
+  -H "X-Api-Key: YOUR_PUBLIC_API_KEY" \
+  -d '{
+    "phone": "919876543210@s.whatsapp.net",
+    "message": "Hello from API!",
+    "is_forwarded": false
+  }'</pre></div>
+
+          <h3>JavaScript (Fetch)</h3>
+          <div class="code-block"><pre>const res = await fetch("https://gowaapi.pages.dev/api/send/message", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
     "X-Device-Id": "official bharath",
     "X-Api-Key": "YOUR_PUBLIC_API_KEY"
   },
-  body: JSON.stringify({phone:"919876543210@s.whatsapp.net",message:"Hello",is_forwarded:false})
+  body: JSON.stringify({
+    phone: "919876543210@s.whatsapp.net",
+    message: "Hello from browser!",
+    is_forwarded: false
+  })
 });
-</pre>
+const data = await res.json();
+console.log(data);</pre></div>
 
-      <h2>Node.js</h2>
-      <pre>
-const fetch = require('node-fetch');
-const BASE = "https://gowaapi.pages.dev/api";
-await fetch(`${BASE}/send/image`, {
-  method: "POST",
-  headers: {"X-Device-Id":"official bharath","X-Api-Key":"YOUR_PUBLIC_API_KEY"},
-  body: new URLSearchParams({phone:"919876543210@s.whatsapp.net",caption:"Pic",image_url:"https://example.com/pic.jpg"})
-});
-</pre>
+          <h3>Python (requests)</h3>
+          <div class="code-block"><pre>import requests
 
-      <h2>Python (requests)</h2>
-      <pre>
-import requests
-BASE = "https://gowaapi.pages.dev/api"
-headers = {"X-Device-Id":"official bharath","X-Api-Key":"YOUR_PUBLIC_API_KEY"}
-resp = requests.post(f"{BASE}/send/file", headers=headers, data={"phone":"919876543210@s.whatsapp.net","caption":"Doc"}, files={"file":open('doc.pdf','rb')})
-print(resp.json())
-</pre>
+res = requests.post(
+    "https://gowaapi.pages.dev/api/send/message",
+    headers={
+        "X-Device-Id": "official bharath",
+        "X-Api-Key": "YOUR_PUBLIC_API_KEY"
+    },
+    json={
+        "phone": "919876543210@s.whatsapp.net",
+        "message": "Hello from Python!",
+        "is_forwarded": False
+    }
+)
+print(res.json())</pre></div>
 
-      <h2>PHP (cURL)</h2>
-      <pre>
-$base = "https://gowaapi.pages.dev/api";
-$ch = curl_init("$base/send/video");
+          <h3>PHP (cURL)</h3>
+          <div class="code-block"><pre>&lt;?php
+$payload = [
+    "phone" => "919876543210@s.whatsapp.net",
+    "message" => "Hello from PHP",
+    "is_forwarded" => false
+];
+$ch = curl_init("https://gowaapi.pages.dev/api/send/message");
 curl_setopt_array($ch, [
-  CURLOPT_POST => true,
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_HTTPHEADER => ["X-Device-Id: official bharath","X-Api-Key: YOUR_PUBLIC_API_KEY"],
-  CURLOPT_POSTFIELDS => [
-    "phone"=>"919876543210@s.whatsapp.net",
-    "video_url"=>"https://example.com/video.mp4"
-  ]
+    CURLOPT_POST => true,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_HTTPHEADER => [
+        "Content-Type: application/json",
+        "X-Device-Id: official bharath",
+        "X-Api-Key: YOUR_PUBLIC_API_KEY"
+    ],
+    CURLOPT_POSTFIELDS => json_encode($payload)
 ]);
-$out = curl_exec($ch);
+$response = curl_exec($ch);
 curl_close($ch);
-echo $out;
-</pre>
+echo $response;</pre></div>
 
-      <h2>React Example (fetch)</h2>
-      <pre>
-const send = async()=>{
-  const res = await fetch('https://gowaapi.pages.dev/api/send/message',{
-    method:'POST',
-    headers:{'Content-Type':'application/json','X-Device-Id':'official bharath','X-Api-Key':'YOUR_PUBLIC_API_KEY'},
-    body:JSON.stringify({phone:'919876543210@s.whatsapp.net',message:'Hi',is_forwarded:false})
+          <h3>Node.js (axios)</h3>
+          <div class="code-block"><pre>const axios = require("axios");
+
+const res = await axios.post(
+    "https://gowaapi.pages.dev/api/send/message",
+    {
+        phone: "919876543210@s.whatsapp.net",
+        message: "Hello from Node.js!",
+        is_forwarded: false
+    },
+    {
+        headers: {
+            "X-Device-Id": "official bharath",
+            "X-Api-Key": "YOUR_PUBLIC_API_KEY"
+        }
+    }
+);
+console.log(res.data);</pre></div>
+
+          <h3>React</h3>
+          <div class="code-block"><pre>import { useState } from "react";
+
+function SendMessage() {
+  const [phone, setPhone] = useState("919876543210@s.whatsapp.net");
+  const [message, setMessage] = useState("");
+
+  const send = async () => {
+    const res = await fetch("https://gowaapi.pages.dev/api/send/message", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Device-Id": "official bharath",
+        "X-Api-Key": "YOUR_PUBLIC_API_KEY"
+      },
+      body: JSON.stringify({ phone, message, is_forwarded: false })
+    });
+    const data = await res.json();
+    console.log(data);
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;input value={phone} onChange={e => setPhone(e.target.value)} /&gt;
+      &lt;textarea value={message} onChange={e => setMessage(e.target.value)} /&gt;
+      &lt;button onClick={send}&gt;Send&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</pre></div>
+
+          <h3>Next.js API Route</h3>
+          <div class="code-block"><pre>// app/api/send/route.ts
+export async function POST(req: Request) {
+  const body = await req.json();
+  const res = await fetch("https://gowaapi.pages.dev/api/send/message", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Device-Id": process.env.GOWA_DEVICE_ID || "official bharath",
+      "X-Api-Key": process.env.PUBLIC_API_KEY || ""
+    },
+    body: JSON.stringify(body)
   });
-  console.log(await res.json());
-};
-</pre>
+  const data = await res.json();
+  return Response.json(data);
+}</pre></div>
+        </section>
 
-      <h2>Next.js API Route Proxy</h2>
-      <pre>
-// pages/api/gowa-proxy.js
-export default async function handler(req,res){
-  const proxyRes = await fetch(`https://gowaapi.pages.dev/api${req.url}`,{method:req.method,headers:req.headers,body:req.body});
-  const data = await proxyRes.json();
-  res.status(proxyRes.status).json(data);
+        <section id="image" class="panel glass doc-section">
+          <h2><span class="endpoint-badge post">POST</span> Send Photo/Image</h2>
+          <p class="section-desc">Send a photo with optional caption, compression, and view-once mode.</p>
+          
+          <div class="endpoint-url">
+            <code>https://gowaapi.pages.dev/api/send/image</code>
+          </div>
+
+          <h3>Request Headers</h3>
+          <table class="param-table">
+            <tr><th>Header</th><th>Required</th><th>Value</th></tr>
+            <tr><td><code>X-Device-Id</code></td><td>Yes</td><td><code>official bharath</code></td></tr>
+            <tr><td><code>X-Api-Key</code></td><td>If set</td><td><code>YOUR_PUBLIC_API_KEY</code></td></tr>
+          </table>
+
+          <h3>Request Body (FormData)</h3>
+          <table class="param-table">
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+            <tr><td><code>phone</code></td><td>string</td><td>Yes</td><td>Recipient JID</td></tr>
+            <tr><td><code>image</code></td><td>file</td><td>Yes*</td><td>Upload local file</td></tr>
+            <tr><td><code>image_url</code></td><td>string</td><td>Yes*</td><td>OR direct URL</td></tr>
+            <tr><td><code>caption</code></td><td>string</td><td>No</td><td>Image caption</td></tr>
+            <tr><td><code>compress</code></td><td>boolean</td><td>No</td><td>Compress media</td></tr>
+            <tr><td><code>view_once</code></td><td>boolean</td><td>No</td><td>View-once mode</td></tr>
+          </table>
+          <p class="note">* Either upload <code>image</code> file or provide <code>image_url</code></p>
+
+          <h3>cURL (Upload)</h3>
+          <div class="code-block"><pre>curl -X POST "https://gowaapi.pages.dev/api/send/image" \
+  -H "X-Device-Id: official bharath" \
+  -H "X-Api-Key: YOUR_PUBLIC_API_KEY" \
+  -F "phone=919876543210@s.whatsapp.net" \
+  -F "caption=Photo caption" \
+  -F "compress=false" \
+  -F "view_once=false" \
+  -F "is_forwarded=false" \
+  -F "image=@photo.jpg"</pre></div>
+
+          <h3>cURL (URL)</h3>
+          <div class="code-block"><pre>curl -X POST "https://gowaapi.pages.dev/api/send/image" \
+  -H "X-Device-Id: official bharath" \
+  -H "X-Api-Key: YOUR_PUBLIC_API_KEY" \
+  -F "phone=919876543210@s.whatsapp.net" \
+  -F "caption=Photo from URL" \
+  -F "image_url=https://example.com/photo.jpg"</pre></div>
+
+          <h3>JavaScript (Browser Upload)</h3>
+          <div class="code-block"><pre>const form = new FormData();
+form.append("phone", "919876543210@s.whatsapp.net");
+form.append("caption", "My photo");
+form.append("image", document.querySelector("#imageInput").files[0]);
+form.append("compress", "false");
+form.append("view_once", "false");
+
+const res = await fetch("https://gowaapi.pages.dev/api/send/image", {
+  method: "POST",
+  headers: {
+    "X-Device-Id": "official bharath",
+    "X-Api-Key": "YOUR_PUBLIC_API_KEY"
+  },
+  body: form
+});
+console.log(await res.json());</pre></div>
+
+          <h3>Python (requests)</h3>
+          <div class="code-block"><pre>import requests
+
+data = {
+    "phone": "919876543210@s.whatsapp.net",
+    "caption": "Photo from Python",
+    "compress": "false",
+    "view_once": "false"
 }
-</pre>
-    </section>
+
+with open("photo.jpg", "rb") as f:
+    files = {"image": ("photo.jpg", f, "image/jpeg")}
+    res = requests.post(
+        "https://gowaapi.pages.dev/api/send/image",
+        data=data,
+        files=files,
+        headers={
+            "X-Device-Id": "official bharath",
+            "X-Api-Key": "YOUR_PUBLIC_API_KEY"
+        }
+    )
+    print(res.json())</pre></div>
+
+          <h3>React Component</h3>
+          <div class="code-block"><pre>function SendImage() {
+  const [file, setFile] = useState(null);
+  const [caption, setCaption] = useState("");
+
+  const send = async () => {
+    const form = new FormData();
+    form.append("phone", "919876543210@s.whatsapp.net");
+    form.append("caption", caption);
+    form.append("image", file);
+
+    await fetch("https://gowaapi.pages.dev/api/send/image", {
+      method: "POST",
+      headers: { "X-Device-Id": "official bharath" },
+      body: form
+    });
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;input type="file" accept="image/*" onChange={e => setFile(e.target.files[0])} /&gt;
+      &lt;input value={caption} onChange={e => setCaption(e.target.value)} placeholder="Caption" /&gt;
+      &lt;button onClick={send}&gt;Send Image&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</pre></div>
+        </section>
+
+        <section id="video" class="panel glass doc-section">
+          <h2><span class="endpoint-badge post">POST</span> Send Video</h2>
+          <p class="section-desc">Send a video with caption, compression, GIF playback, and view-once options.</p>
+          
+          <div class="endpoint-url">
+            <code>https://gowaapi.pages.dev/api/send/video</code>
+          </div>
+
+          <h3>Request Body (FormData)</h3>
+          <table class="param-table">
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+            <tr><td><code>phone</code></td><td>string</td><td>Yes</td><td>Recipient JID</td></tr>
+            <tr><td><code>video</code></td><td>file</td><td>Yes*</td><td>Upload local file</td></tr>
+            <tr><td><code>video_url</code></td><td>string</td><td>Yes*</td><td>OR direct URL</td></tr>
+            <tr><td><code>caption</code></td><td>string</td><td>No</td><td>Video caption</td></tr>
+            <tr><td><code>compress</code></td><td>boolean</td><td>No</td><td>Compress media</td></tr>
+            <tr><td><code>view_once</code></td><td>boolean</td><td>No</td><td>View-once mode</td></tr>
+            <tr><td><code>gif_playback</code></td><td>boolean</td><td>No</td><td>Play as GIF</td></tr>
+          </table>
+          <p class="note">* Either upload <code>video</code> file or provide <code>video_url</code></p>
+
+          <h3>cURL (Upload)</h3>
+          <div class="code-block"><pre>curl -X POST "https://gowaapi.pages.dev/api/send/video" \
+  -H "X-Device-Id: official bharath" \
+  -H "X-Api-Key: YOUR_PUBLIC_API_KEY" \
+  -F "phone=919876543210@s.whatsapp.net" \
+  -F "caption=Video caption" \
+  -F "compress=false" \
+  -F "view_once=false" \
+  -F "gif_playback=false" \
+  -F "is_forwarded=false" \
+  -F "video=@video.mp4"</pre></div>
+
+          <h3>cURL (URL)</h3>
+          <div class="code-block"><pre>curl -X POST "https://gowaapi.pages.dev/api/send/video" \
+  -H "X-Device-Id: official bharath" \
+  -H "X-Api-Key: YOUR_PUBLIC_API_KEY" \
+  -F "phone=919876543210@s.whatsapp.net" \
+  -F "caption=Video from URL" \
+  -F "video_url=https://example.com/video.mp4"</pre></div>
+
+          <h3>Python (requests)</h3>
+          <div class="code-block"><pre>import requests
+
+data = {
+    "phone": "919876543210@s.whatsapp.net",
+    "caption": "Video from Python",
+    "compress": "false",
+    "view_once": "false"
+}
+
+with open("video.mp4", "rb") as f:
+    files = {"video": ("video.mp4", f, "video/mp4")}
+    res = requests.post(
+        "https://gowaapi.pages.dev/api/send/video",
+        data=data,
+        files=files,
+        headers={
+            "X-Device-Id": "official bharath",
+            "X-Api-Key": "YOUR_PUBLIC_API_KEY"
+        }
+    )
+    print(res.json())</pre></div>
+
+          <h3>JavaScript (Browser)</h3>
+          <div class="code-block"><pre>const form = new FormData();
+form.append("phone", "919876543210@s.whatsapp.net");
+form.append("caption", "My video");
+form.append("video", document.querySelector("#videoInput").files[0]);
+form.append("compress", "false");
+form.append("view_once", "false");
+
+const res = await fetch("https://gowaapi.pages.dev/api/send/video", {
+  method: "POST",
+  headers: { "X-Device-Id": "official bharath" },
+  body: form
+});
+console.log(await res.json());</pre></div>
+        </section>
+
+        <section id="file" class="panel glass doc-section">
+          <h2><span class="endpoint-badge post">POST</span> Send File/Document</h2>
+          <p class="section-desc">Send any file type (PDF, DOCX, ZIP, etc.) with an optional caption.</p>
+          
+          <div class="endpoint-url">
+            <code>https://gowaapi.pages.dev/api/send/file</code>
+          </div>
+
+          <h3>Request Body (FormData)</h3>
+          <table class="param-table">
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+            <tr><td><code>phone</code></td><td>string</td><td>Yes</td><td>Recipient JID</td></tr>
+            <tr><td><code>file</code></td><td>file</td><td>Yes</td><td>Document to send</td></tr>
+            <tr><td><code>caption</code></td><td>string</td><td>No</td><td>File caption</td></tr>
+            <tr><td><code>is_forwarded</code></td><td>boolean</td><td>No</td><td>Mark as forwarded</td></tr>
+            <tr><td><code>reply_message_id</code></td><td>string</td><td>No</td><td>Reply to message</td></tr>
+          </table>
+
+          <h3>cURL</h3>
+          <div class="code-block"><pre>curl -X POST "https://gowaapi.pages.dev/api/send/file" \
+  -H "X-Device-Id: official bharath" \
+  -H "X-Api-Key: YOUR_PUBLIC_API_KEY" \
+  -F "phone=919876543210@s.whatsapp.net" \
+  -F "caption=Document caption" \
+  -F "is_forwarded=false" \
+  -F "file=@document.pdf"</pre></div>
+
+          <h3>Python (requests)</h3>
+          <div class="code-block"><pre>import requests
+
+data = {
+    "phone": "919876543210@s.whatsapp.net",
+    "caption": "Document from Python"
+}
+
+with open("document.pdf", "rb") as f:
+    files = {"file": ("document.pdf", f, "application/pdf")}
+    res = requests.post(
+        "https://gowaapi.pages.dev/api/send/file",
+        data=data,
+        files=files,
+        headers={
+            "X-Device-Id": "official bharath",
+            "X-Api-Key": "YOUR_PUBLIC_API_KEY"
+        }
+    )
+    print(res.json())</pre></div>
+
+          <h3>JavaScript (Browser)</h3>
+          <div class="code-block"><pre>const form = new FormData();
+form.append("phone", "919876543210@s.whatsapp.net");
+form.append("caption", "My document");
+form.append("file", document.querySelector("#fileInput").files[0]);
+form.append("is_forwarded", "false");
+
+const res = await fetch("https://gowaapi.pages.dev/api/send/file", {
+  method: "POST",
+  headers: { "X-Device-Id": "official bharath" },
+  body: form
+});
+console.log(await res.json());</pre></div>
+        </section>
+
+        <section id="devices" class="panel glass doc-section">
+          <h2><span class="endpoint-badge get">GET</span> Check Connected Devices</h2>
+          <p class="section-desc">List all devices currently connected to your Gowa API.</p>
+          
+          <div class="endpoint-url">
+            <code>https://gowaapi.pages.dev/api/devices</code>
+          </div>
+
+          <h3>cURL</h3>
+          <div class="code-block"><pre>curl "https://gowaapi.pages.dev/api/devices" \
+  -H "X-Api-Key: YOUR_PUBLIC_API_KEY"</pre></div>
+
+          <h3>JavaScript</h3>
+          <div class="code-block"><pre>const res = await fetch("https://gowaapi.pages.dev/api/devices", {
+  headers: { "X-Api-Key": "YOUR_PUBLIC_API_KEY" }
+});
+const devices = await res.json();
+console.log(devices);</pre></div>
+        </section>
+
+        <section id="optional" class="panel glass doc-section">
+          <h2>Optional Fields Reference</h2>
+          <table class="param-table">
+            <tr><th>Field</th><th>Type</th><th>Applies To</th><th>Description</th></tr>
+            <tr><td><code>reply_message_id</code></td><td>string</td><td>All</td><td>Reply to previous message</td></tr>
+            <tr><td><code>duration</code></td><td>number</td><td>All</td><td>Disappearing duration (seconds)</td></tr>
+            <tr><td><code>is_forwarded</code></td><td>boolean</td><td>All</td><td>Mark as forwarded</td></tr>
+            <tr><td><code>compress</code></td><td>boolean</td><td>Image, Video</td><td>Compress media</td></tr>
+            <tr><td><code>view_once</code></td><td>boolean</td><td>Image, Video</td><td>WhatsApp view-once</td></tr>
+            <tr><td><code>gif_playback</code></td><td>boolean</td><td>Video</td><td>Play as GIF</td></tr>
+          </table>
+        </section>
+
+        <section id="response" class="panel glass doc-section">
+          <h2>Response Format</h2>
+          <h3>Success</h3>
+          <div class="code-block"><pre>{
+  "status": 200,
+  "body": {
+    "code": "SUCCESS",
+    "message": "Message sent",
+    "results": {}
+  }
+}</pre></div>
+
+          <h3>Error</h3>
+          <div class="code-block"><pre>{
+  "code": "ERROR",
+  "message": "Reason for failure"
+}</pre></div>
+        </section>
+
+        <section id="cors" class="panel glass doc-section">
+          <h2>CORS & Limits</h2>
+          <p>The Cloudflare API allows cross-origin requests from any domain. Headers permitted:</p>
+          <ul>
+            <li><code>Content-Type</code></li>
+            <li><code>Accept</code></li>
+            <li><code>X-Device-Id</code></li>
+            <li><code>X-Api-Key</code></li>
+          </ul>
+          <p class="note">Cloudflare upload limits apply. For large files, prefer <code>image_url</code> or <code>video_url</code> parameters.</p>
+        </section>
+      </div>
+    </div>
+
+    <footer class="panel glass footer">
+      <p>Gowa API Documentation &bull; <a href="/index.html">API Tester</a> &bull; <a href="https://github.com/kbharathca/gowaapi">GitHub</a></p>
+    </footer>
   </main>
-<a href=\ /index.html\ class=\back-link\>&larr; Back to Tester</a>\n</body>
+
+  <script>
+    // Fetch and display device info from env endpoint
+    async function loadDeviceInfo() {
+      try {
+        const res = await fetch("/api/_env");
+        const data = await res.json();
+        const el = document.getElementById("deviceInfo");
+        if (data.ok) {
+          el.innerHTML = `
+            <div class="env-row"><span>Device ID:</span> <code>${data.GOWA_DEVICE_ID}</code></div>
+            <div class="env-row"><span>API Base:</span> <code>${data.GOWA_BASE_URL}</code></div>
+            <div class="env-row"><span>Public Key:</span> <code>${data.PUBLIC_API_KEY_SET ? "Configured" : "Not set"}</code></div>
+          `;
+        } else {
+          el.innerHTML = `<p class="note">Unable to load device info.</p>`;
+        }
+      } catch (e) {
+        document.getElementById("deviceInfo").innerHTML = `<p class="note">Error loading device info: ${e.message}</p>`;
+      }
+    }
+    loadDeviceInfo();
+
+    // Smooth scroll for sidebar links
+    document.querySelectorAll(".sidebar-nav a").forEach(link => {
+      link.addEventListener("click", e => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute("href"));
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    });
+  </script>
+</body>
 </html>
